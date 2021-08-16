@@ -1,0 +1,119 @@
+---
+title: "Plotting"
+output: html_document
+---
+
+# Template
+
+- [Reference](https://ggplot2.tidyverse.org/reference/)
+- [Cheatsheet](https://github.com/rstudio/cheatsheets/blob/master/data-visualization-2.1.pdf)
+- [Extentions](https://exts.ggplot2.tidyverse.org/gallery/)
+- [Themes](https://yutannihilation.github.io/allYourFigureAreBelongToUs/ggthemes/)
+- [GG Animate](https://gganimate.com/)
+
+
+```{r}
+
+library(tidyverse)   
+library(ggplot2)
+library(ggthemes) # theme_economist() + scale_colour_economist()
+library(gganimate)
+
+mpg
+```
+
+
+```{r}
+ggplot() +
+  geom_...() +
+  labs(
+    title = "",
+    subtitle = "",
+    caption = "Data source: ILO, 2017",
+    x = "",
+    y = "",
+    legend.position = c(.85,.85)
+  )
+  
+```
+
+
+# Scatter
+
+```{r}
+# Combining dot plot and smooth line AND coloring dots AND taking only subset of one of the variables
+ggplot(data = mpg, mapping = aes(x = displ, y = hwy)) + 
+  geom_point(mapping = aes(color = class)) + 
+  geom_smooth(data = filter(mpg, class == "subcompact"), se=FALSE)
+```
+
+
+
+# Lines and Area
+
+```{r}
+# Area proportion over time
+ggplot(mtcars, aes(x = mpg, y = mpg, fill = cyl)) +
+  geom_area(position = 'fill')
+
+
+# Line plots with shaded areas
+ggplot(economics, aes(x = date, y = unemploy/pop)) +
+  geom_rect(data = recess,
+            aes(xmin = begin, xmax = end, ymin = -Inf, ymax = +Inf),
+            inherit.aes = FALSE, fill = "red", alpha = 0.2) + geom_line()
+
+
+# Groups + members changing over time
+ggplot(ChickWeight, aes(x = Time, y = weight, color = Diet)) +
+  geom_line(aes(group = Chick, alpha = .3)) + 
+  geom_smooth(lwd = 2, se = F)
+
+
+# Change over time
+ggplot(barley, aes(x = year, y = yield, col = site, group = site, fill = site)) + 
+  stat_summary(fun.y = mean, geom = 'line') + 
+  stat_summary(fun.data = mean_sdl, fun.args = list(mult = 1), geom = 'ribbon', col = NA, alpha = .1)
+
+
+geom_density(alpha = .4)
+```
+
+
+# Text
+
+```{r}
+# Geom text - labeling connecting lines
+geom_text(
+  aes(x = working_hours,
+      y = country,
+      label = round(working_hours, 1),
+      hjust = ifelse(year == "2006", 1.4, -0.4)
+  ),
+  # Change the appearance of the text
+  size = 3,
+  family = "Bookman",
+  color = "gray25"
+)
+```
+
+
+# Ilo
+
+```{r}
+theme_ilo <- function() {
+  theme_minimal() +
+    theme(
+      text = element_text(family = "Bookman", color = "gray25"),
+      plot.subtitle = element_text(size = 10),
+      plot.caption = element_text(color = "gray30"),
+      plot.background = element_rect(fill = "gray95"),
+      plot.margin = unit(c(5, 10, 5, 10), units = "mm")
+    )
+}
+```
+
+
+
+
+

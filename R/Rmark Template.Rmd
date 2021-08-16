@@ -1,0 +1,52 @@
+---
+title: ""
+subtitle: ""
+author: "Sam Musch - musch038@umn.edu"
+urlcolor: "blue"
+output:
+  pdf_document:
+    toc: true
+    toc_depth: 4
+    number_sections: true
+    #df_print: knitr:kable()
+---
+
+---
+
+```{r global_options, include=FALSE}
+knitr::opts_chunk$set(fig.width=5, fig.height=3, fig.align='left', warning=F, message=F)
+kable_func <- function(data) {
+  knitr::kable(data, booktabs=T, digits=2) %>%
+    kable_styling(latex_options = c('striped', 'scale_down'))
+}
+theme_ilo <- function() {
+  theme_minimal() +
+    theme(
+      text = element_text(family = "Bookman", color = "gray25"),
+      plot.subtitle = element_text(size = 10),
+      plot.caption = element_text(color = "gray30"),
+      plot.background = element_rect(fill = "gray95"),
+      plot.margin = unit(c(5, 10, 5, 10), units = "mm")
+    )
+}
+mode <- function(x) {
+  ux <- unique(x)
+  ux[which.max(tabulate(match(x, ux)))]
+}
+```
+
+
+```{r}
+library(TSA)
+library(ggplot2)
+library(dplyr)
+library(forecast)
+```
+
+
+
+```{r}
+
+```
+
+
